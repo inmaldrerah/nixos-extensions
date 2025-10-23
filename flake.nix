@@ -12,7 +12,7 @@
       };
 
       overlays.default = final: prev: {
-        inherit (packages."x86_64-linux") shell;
+        shell = prev.callPackage ./pkgs/shell/package.nix {};
       };
 
       nixosModules = rec {

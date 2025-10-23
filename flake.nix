@@ -6,9 +6,31 @@
   outputs = { self, nixpkgs, ... }:
     {
       packages."x86_64-linux" = {
-        switch-to-configuration-ng =
+        shell =
           nixpkgs.legacyPackages."x86_64-linux".callPackage
-            ./pkgs/switch-to-configuration-ng/package.nix {};
+            ./pkgs/shell/package.nix {};
+      };
+
+      nixosModules = rec {
+        shell = { config, lib, pkgs, ... }: {
+          options.programs.shell = {
+            enable = lib.mkEnableOption "shell";
+            package = mkPackageOption pkgs "shell" {};
+          };
+
+          config = let
+            cfg = config.programs.shell;
+          in lib.mkIf cfg.enable {
+            environment.shells = [
+              "/run/current-system/sw/bin/shell-starter"
+              "${lib.getExe cfg.package}"
+            ];
+            environment.systemPackages = [
+              cfg.package
+            ];
+          };
+        };
+        default = shell;
       };
     };
 }

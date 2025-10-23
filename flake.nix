@@ -4,11 +4,15 @@
   };
 
   outputs = { self, nixpkgs, ... }:
-    {
+    rec {
       packages."x86_64-linux" = {
         shell =
           nixpkgs.legacyPackages."x86_64-linux".callPackage
             ./pkgs/shell/package.nix {};
+      };
+
+      overlays.default = final: prev: {
+        inherit (packages."x86_64-linux") shell;
       };
 
       nixosModules = rec {

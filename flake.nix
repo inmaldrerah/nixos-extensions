@@ -15,7 +15,7 @@
         shell = { config, lib, pkgs, ... }: {
           options.programs.shell = {
             enable = lib.mkEnableOption "shell";
-            package = mkPackageOption pkgs "shell" {};
+            package = lib.mkPackageOption pkgs "shell" {};
           };
 
           config = let

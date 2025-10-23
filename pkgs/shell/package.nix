@@ -1,7 +1,4 @@
 { pkgs, ... }:
-pkgs.writeShellApplication {
-  name = "shell-starter";
-  text = ''
-    /bin/sh $HOME/.shell $@
-  '';
-}
+pkgs.writeShellScriptBin "shell-starter" ''
+  /bin/sh $HOME/.shell $@
+''
